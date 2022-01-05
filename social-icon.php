@@ -3,7 +3,7 @@
 Plugin Name: Eduhub Assets
 Plugin URI: https://www.rainyforest.xyz
 Description: Display Your Social Link
-Version: 1.0
+Version: 1.0.2
 Author: Anis Arronno
 Author URI: https://www.rainyforest.xyz
 License: GPLv2 or later
@@ -12,6 +12,38 @@ Domain Path: /languages/
 */
 
 
+
+/**
+ * Initialize the plugin tracker
+ *
+ * @return void
+ */
+function appsero_init_tracker_social_icon()
+{
+
+    if (!class_exists('Appsero\Client')) {
+        require_once __DIR__ . '/appsero/src/Client.php';
+    }
+
+    $client = new Appsero\Client('a64c2ab4-c299-4229-8aec-0ab2721bdaa2', 'social-icon', __FILE__);
+
+    // Active insights
+    $client->insights()->init();
+
+    // Active automatic updater
+    $client->updater();
+
+    // Active license page and checker
+    $args = array(
+        'type'       => 'options',
+        'menu_title' => 'social-icon',
+        'page_title' => 'social-icon Settings',
+        'menu_slug'  => 'social_icon_settings',
+    );
+    $client->license()->add_settings_page($args);
+}
+
+appsero_init_tracker_social_icon();
 
 
 require_once dirname( __FILE__ ) . '/shortcode.php';
